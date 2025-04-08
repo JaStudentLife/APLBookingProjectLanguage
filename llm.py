@@ -26,13 +26,12 @@ def fetch_events_from_gemini(query):
              all major routes operated,ypical frequency of service,Terminal locations,General operating hours,Popular
               connections,Any special services (express, luxury, etc.) Format this information in a user-friendly way.
                If you don't have the correct information, create  information that would make sense based on typical 
-               Jamaican transportation patterns, and clearly indicate it's an approximation."""
+               Jamaican transportation patterns, and clearly indicate it's an approximation. it should be user friendly so no astericks etc or thinks that make it look weird"""
 
         response = model.generate_content(enhanced_prompt)
         return response.text
     except Exception as e:
         print(f"[Gemini Error] {e}")
-        # Even the fallback should be comprehensive
         return """[Gemini unavailable – using fallback]"""
 
 
@@ -51,14 +50,15 @@ def provide_syntax_correction(user_input):
         The user provided the following command that caused a syntax error: '{user_input}'.
 
         Here are examples of correct syntax for our custom language:BOOK 2 TICKETS TO "Reggae Sumfest" ON "2025-05-15" AT "8:30 AM" FOR "Joy Reynolds"
-        ,CONFIRM "Reggae Sumfest" FOR "Joy Reynolds", PAY "Reggae Sumfest" FOR "Joy Reynolds"
-        ,CANCEL "Reggae Sumfest" FOR "Joy Reynolds", LIST "Knutsford Express" SCHEDULE,
-        LIST "Knutsford Express" ROUTE FROM "Kingston" TO "Montego Bay"
+        ,CONFIRM Reggae Sumfest FOR Joy Reynolds, PAY Reggae Sumfest FOR Joy Reynolds
+        ,CANCEL Reggae Sumfest FOR Joy Reynolds, LIST Knutsford Express" SCHEDULE,
+        LIST Knutsford Express ROUTE FROM Kingston TO Montego Bay
         Common mistakes include: Forgetting to use the word "ON" before the date (e.g., "BOOK 2 TICKETS TO Reggae Sumfest February 17, 2025")
         ,Missing quotes around event names or service names (e.g., "LIST Knutsford Express SCHEDULE")
         Please analyze the user input and provide the corrected version of the command in the correct format. Be sure to:
-        Point out the erro,Suggest the correct syntax,Provide a friendly, easy-to-understand explanation for the user.
-        """
+        Point out the erro,Suggest the correct syntax,Provide a friendly, easy-to-understand explanation for the user. there should be no quotation sor full stops so include that too
+        . We currenly only have the following events     r'(Reggae\s+Sumfest|Knutsford\s+Express|Rebel\s+Salute|Jamaica\s+Carnival|Dream\s+Weekend)'
+in our lexer so if the user list an event not there tell them that event is unavailble."""
 
         response = model.generate_content(enhanced_prompt)
         return response.text
