@@ -43,3 +43,55 @@ def fetch_from_gemini(prompt, system_instruction="You are a helpful assistant fo
     except Exception as e:
         print("[Gemini Error]", e)
         return "[Gemini unavailable – using fallback response]"
+
+    def provide_syntax_correction(user_input):
+        try:
+            # Provide a detailed prompt to Gemini for correcting the syntax
+            enhanced_prompt = f"""
+            The user provided the following command that caused a syntax error: '{user_input}'.
+
+            Here are examples of correct syntax for our custom language:
+            - BOOK 2 TICKETS TO "Reggae Sumfest" ON "2025-05-15" AT "8:30 AM" FOR "Joy Reynolds"
+            - CONFIRM "Reggae Sumfest" FOR "Joy Reynolds"
+            - PAY "Reggae Sumfest" FOR "Joy Reynolds"
+            - CANCEL "Reggae Sumfest" FOR "Joy Reynolds"
+            - LIST "Knutsford Express" SCHEDULE
+            - LIST "Knutsford Express" ROUTE FROM "Kingston" TO "Montego Bay"
+
+            Common mistakes include:
+            - Forgetting to use the word "ON" before the date (e.g., "BOOK 2 TICKETS TO Reggae Sumfest February 17, 2025")
+            - Missing quotes around event names or service names (e.g., "LIST Knutsford Express SCHEDULE")
+
+            Please analyze the user input and provide the corrected version of the command in the correct format. Be sure to:
+            - Point out the error
+            - Suggest the correct syntax
+            - Provide a friendly, easy-to-understand explanation for the user.
+            """
+
+            response = model.generate_content(enhanced_prompt)
+            return response.text
+        except Exception as e:
+            print(f"[Gemini Error] {e}")
+            return "[Gemini unavailable – using fallback]"
+
+
+def provide_syntax_correction(user_input):
+    try:
+        enhanced_prompt = f"""
+        The user provided the following command that caused a syntax error: '{user_input}'.
+
+        Here are examples of correct syntax for our custom language:BOOK 2 TICKETS TO "Reggae Sumfest" ON "2025-05-15" AT "8:30 AM" FOR "Joy Reynolds"
+        ,CONFIRM "Reggae Sumfest" FOR "Joy Reynolds", PAY "Reggae Sumfest" FOR "Joy Reynolds"
+        ,CANCEL "Reggae Sumfest" FOR "Joy Reynolds", LIST "Knutsford Express" SCHEDULE,
+        LIST "Knutsford Express" ROUTE FROM "Kingston" TO "Montego Bay"
+        Common mistakes include: Forgetting to use the word "ON" before the date (e.g., "BOOK 2 TICKETS TO Reggae Sumfest February 17, 2025")
+        ,Missing quotes around event names or service names (e.g., "LIST Knutsford Express SCHEDULE")
+        Please analyze the user input and provide the corrected version of the command in the correct format. Be sure to:
+        Point out the erro,Suggest the correct syntax,Provide a friendly, easy-to-understand explanation for the user.
+        """
+
+        response = model.generate_content(enhanced_prompt)
+        return response.text
+    except Exception as e:
+        print(f"[Gemini Error] {e}")
+        return "[Gemini unavailable – using fallback]"

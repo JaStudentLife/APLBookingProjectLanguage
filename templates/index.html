@@ -30,6 +30,8 @@
       border-radius: 8px;
       box-shadow: 0 2px 4px rgba(0,0,0,0.1);
       outline: none;
+      height: 200px;
+      resize: none; /* Disable resizing */
     }
 
     button {
@@ -60,16 +62,43 @@
       white-space: pre-wrap;
       word-wrap: break-word;
     }
+
+    #microphone {
+      background: #00acc1;
+      color: white;
+      padding: 10px;
+      margin-top: 10px;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+
+    #microphone:hover {
+      background: #007c91;
+    }
   </style>
 </head>
 <body>
-  <h2>✨ Custom Language + Gemini ✨</h2>
-  <input type="text" id="command" placeholder="Type your command (e.g., Book 2 tickets to Reggae Sumfest on July 12)">
+  <h2>✨ APL Booking Project Language ✨</h2>
+  <textarea id="command" placeholder="Type your command (e.g., Book 2 tickets to Reggae Sumfest on July 12)"></textarea>
   <button onclick="sendCommand()">Run Command</button>
+
+  <button id="microphone" onclick="startSpeechRecognition()">🎤 Speak</button>
 
   <pre id="output">Awaiting input...</pre>
 
   <script>
+    const recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
+    recognition.lang = 'en-US'; // Set language to English
+
+    recognition.onresult = function(event) {
+      const transcript = event.results[0][0].transcript; // Get the transcribed text
+      document.getElementById("command").value = transcript; // Set the value of textarea to transcribed text
+    };
+
+    function startSpeechRecognition() {
+      recognition.start();
+    }
+
     async function sendCommand() {
       const command = document.getElementById("command").value;
       const output = document.getElementById("output");

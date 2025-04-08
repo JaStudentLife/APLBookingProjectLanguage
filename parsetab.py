@@ -6,9 +6,9 @@ _tabversion = '3.10'
 
 _lr_method = 'LALR'
 
-_lr_signature = 'BOOK CANCEL CONFIRM DATE FOR HELP LIST NAME NUMBER ON PAY SCHEDULE TICKETS TOcommand : BOOK NUMBER TICKETS TO NAME ON DATEcommand : CONFIRM NAME FOR NAMEcommand : PAY NAME FOR NAMEcommand : CANCEL NAME FOR NAMEcommand : LIST NAME SCHEDULEcommand : HELP'
+_lr_signature = 'AM_PM AT BOOK CANCEL COLON COMMA CONFIRM DATE FOR FROM HELP LIST NAME NUMBER ON PAY ROUTE SCHEDULE TICKETS TIME TOcommand : BOOK NUMBER TICKETS TO NAME ON DATE AT TIME FOR NAMEcommand : LIST NAME ROUTE FROM NAME TO NAMEcommand : LIST NAME SCHEDULEcommand : HELP'
     
-_lr_action_items = {'BOOK':([0,],[2,]),'CONFIRM':([0,],[3,]),'PAY':([0,],[4,]),'CANCEL':([0,],[5,]),'LIST':([0,],[6,]),'HELP':([0,],[7,]),'$end':([1,7,17,19,20,21,24,],[0,-6,-5,-2,-3,-4,-1,]),'NUMBER':([2,],[8,]),'NAME':([3,4,5,6,14,15,16,18,],[9,10,11,12,19,20,21,22,]),'TICKETS':([8,],[13,]),'FOR':([9,10,11,],[14,15,16,]),'SCHEDULE':([12,],[17,]),'TO':([13,],[18,]),'ON':([22,],[23,]),'DATE':([23,],[24,]),}
+_lr_action_items = {'BOOK':([0,],[2,]),'LIST':([0,],[3,]),'HELP':([0,],[4,]),'$end':([1,4,9,17,21,],[0,-4,-3,-2,-1,]),'NUMBER':([2,],[5,]),'NAME':([3,10,11,15,20,],[6,12,13,17,21,]),'TICKETS':([5,],[7,]),'ROUTE':([6,],[8,]),'SCHEDULE':([6,],[9,]),'TO':([7,13,],[10,15,]),'FROM':([8,],[11,]),'ON':([12,],[14,]),'DATE':([14,],[16,]),'AT':([16,],[18,]),'TIME':([18,],[19,]),'FOR':([19,],[20,]),}
 
 _lr_action = {}
 for _k, _v in _lr_action_items.items():
@@ -27,10 +27,8 @@ for _k, _v in _lr_goto_items.items():
 del _lr_goto_items
 _lr_productions = [
   ("S' -> command","S'",1,None,None,None),
-  ('command -> BOOK NUMBER TICKETS TO NAME ON DATE','command',7,'p_command_book','parser.py',16),
-  ('command -> CONFIRM NAME FOR NAME','command',4,'p_command_confirm','parser.py',22),
-  ('command -> PAY NAME FOR NAME','command',4,'p_command_pay','parser.py',33),
-  ('command -> CANCEL NAME FOR NAME','command',4,'p_command_cancel','parser.py',43),
-  ('command -> LIST NAME SCHEDULE','command',3,'p_command_list','parser.py',53),
-  ('command -> HELP','command',1,'p_command_help','parser.py',60),
+  ('command -> BOOK NUMBER TICKETS TO NAME ON DATE AT TIME FOR NAME','command',11,'p_command_book','parser.py',8),
+  ('command -> LIST NAME ROUTE FROM NAME TO NAME','command',7,'p_command_route','parser.py',27),
+  ('command -> LIST NAME SCHEDULE','command',3,'p_command_list','parser.py',36),
+  ('command -> HELP','command',1,'p_command_help','parser.py',43),
 ]
