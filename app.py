@@ -26,7 +26,9 @@ def run_command():
 
     try:
         output_log.clear()
-        parser.parse(command)
+        for line in command.strip().split("\n"):
+            if line.strip():
+                parser.parse(line.strip())
         return jsonify({"response": output_log})
     except Exception as e:
         return jsonify({"error": str(e)}), 500
