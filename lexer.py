@@ -2,70 +2,80 @@ import ply.lex as lex
 
 tokens = (
     'BOOK', 'CONFIRM', 'PAY', 'CANCEL', 'LIST',
-    'NUMBER', 'TICKETS', 'TO', 'ON', 'DATE',
-    'FOR', 'NAME', 'SCHEDULE', 'HELP', 'AM_PM', 'TIME', 'COMMA', 'COLON', 'ROUTE', 'FROM', 'AT'
+    'NUMBER', 'TICKETS', 'TO', 'ON', 'EVENT',
+    'FOR', 'NAME', 'SCHEDULE', 'HELP', 'AM_PM', 'TIME', 'DATE', 'ROUTE', 'FROM', 'AT'
 )
 
 t_ignore = ' \t'
 
-def t_AT(t):
-    r'at'
-    return t
-
+# Define all keywords first
 def t_BOOK(t):
-    r'[Bb]ook'
-    return t
-
-def t_HELP(t):
-    r'[Hh]elp'
+    r'[Bb][Oo][Oo][Kk]'
     return t
 
 def t_CONFIRM(t):
-    r'[Cc]onfirm'
+    r'[Cc][Oo][Nn][Ff][Ii][Rr][Mm]'
     return t
 
 def t_PAY(t):
-    r'[Pp]ay'
+    r'[Pp][Aa][Yy]'
     return t
 
 def t_CANCEL(t):
-    r'[Cc]ancel'
+    r'[Cc][Aa][Nn][Cc][Ee][Ll]'
     return t
 
 def t_LIST(t):
-    r'[Ll]ist'
+    r'[Ll][Ii][Ss][Tt]'
+    return t
+
+def t_HELP(t):
+    r'[Hh][Ee][Ll][Pp]'
     return t
 
 def t_TICKETS(t):
-    r'tickets?'
-    return t
-
-def t_TO(t):
-    r'to'
+    r'[Tt][Ii][Cc][Kk][Ee][Tt][Ss]?'
     return t
 
 def t_ON(t):
-    r'on'
+    r'[Oo][Nn]'
+    return t
+
+def t_TO(t):
+    r'[Tt][Oo]'
+    return t
+
+def t_AT(t):
+    r'[Aa][Tt]'
     return t
 
 def t_FOR(t):
-    r'for'
-    return t
-
-def t_SCHEDULE(t):
-    r'schedule'
-    return t
-
-def t_ROUTE(t):
-    r'[Rr]oute'
+    r'[Ff][Oo][Rr]'
     return t
 
 def t_FROM(t):
-    r'[Ff]rom'
+    r'[Ff][Rr][Oo][Mm]'
     return t
 
+def t_ROUTE(t):
+    r'[Rr][Oo][Uu][Tt][Ee]'
+    return t
+
+def t_SCHEDULE(t):
+    r'[Ss][Cc][Hh][Ee][Dd][Uu][Ll][Ee]'
+    return t
+
+# Define special tokens for date, time, etc.
 def t_DATE(t):
-    r'(January|February|March|April|May|June|July|August|September|October|November|December)\s\d{1,2},?\s?\d{0,4}'
+    r'(January|February|March|April|May|June|July|August|September|October|November|December)\s+\d{1,2},\s+\d{4}'
+    return t
+
+def t_AM_PM(t):
+    r'(AM|PM|am|pm)'
+    return t
+
+def t_TIME(t):
+    r'\d{1,2}:\d{2}'
     return t
 
 def t_NUMBER(t):
@@ -73,20 +83,12 @@ def t_NUMBER(t):
     t.value = int(t.value)
     return t
 
-def t_TIME(t):
-    r'\d{1,2}:\d{2}\s?(AM|PM|am|pm)'
-    return t
-
-def t_COMMA(t):
-    r','
-    return t
-
-def t_COLON(t):
-    r':'
+def t_EVENT(t):
+    r'(Reggae\s+Sumfest|Knutsford\s+Express|Rebel\s+Salute|Jamaica\s+Carnival|Dream\s+Weekend)'
     return t
 
 def t_NAME(t):
-    r'[A-Z][a-z]+(\s[A-Z][a-z]+)*'
+    r'[A-Z][a-z]+(\s+[A-Z][a-z]+)*'
     return t
 
 def t_newline(t):
