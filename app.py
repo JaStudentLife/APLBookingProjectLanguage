@@ -1,15 +1,22 @@
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, render_template
 from parser import parser
 import builtins
+import os
 
-app = Flask(__name__)
+app = Flask(__name__, template_folder="templates", static_folder="static")
 
-# Store command output
+# Store output from commands
 output_log = []
 
-@app.route("/")
+# Custom print function to capture command output
+old_print = print
+def custom_print(*args, **kwargs):
+    output_log.append(" ".join(map(str, args)))
+builtins.print = custom_print
+
+@app.route("/", methods=["GET"])
 def home():
-    return "Custom Language + Gemini is alive on Azure!"
+    return render_template("index.html")
 
 @app.route("/run", methods=["POST"])
 def run_command():
@@ -24,9 +31,10 @@ def run_command():
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
-old_print = print
 
-def custom_print(*args, **kwargs):
-    output_log.append(" ".join(map(str, args)))
+@app.route("/health", methods=["GET"])
+def health_check():
+    return jsonify({"status": "UP"}), 200
 
-builtins.print = custom_print
+if __name__ == "__main__":
+    app.run(debug=True)

@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>APL Command Interface</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    body {
+      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(to right, #e0f7fa, #ffffff);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 40px 20px;
+      min-height: 100vh;
+    }
+
+    h2 {
+      color: #006064;
+      margin-bottom: 20px;
+    }
+
+    #command {
+      width: 90%;
+      max-width: 600px;
+      padding: 12px;
+      font-size: 16px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      outline: none;
+    }
+
+    button {
+      margin-top: 15px;
+      padding: 10px 20px;
+      font-size: 16px;
+      border: none;
+      border-radius: 6px;
+      background-color: #00acc1;
+      color: white;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+
+    button:hover {
+      background-color: #007c91;
+    }
+
+    #output {
+      background-color: #f9f9f9;
+      color: #333;
+      padding: 20px;
+      margin-top: 30px;
+      width: 90%;
+      max-width: 700px;
+      border-radius: 8px;
+      box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.05);
+      white-space: pre-wrap;
+      word-wrap: break-word;
+    }
+  </style>
+</head>
+<body>
+  <h2>✨ Custom Language + Gemini ✨</h2>
+  <input type="text" id="command" placeholder="Type your command (e.g., Book 2 tickets to Reggae Sumfest on July 12)">
+  <button onclick="sendCommand()">Run Command</button>
+
+  <pre id="output">Awaiting input...</pre>
+
+  <script>
+    async function sendCommand() {
+      const command = document.getElementById("command").value;
+      const output = document.getElementById("output");
+      output.innerText = "Processing...";
+
+      try {
+        const response = await fetch("/run", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ command })
+        });
+
+        const data = await response.json();
+        output.innerText = data.response?.join("\n") || data.error;
+      } catch (err) {
+        output.innerText = "An error occurred: " + err.message;
+      }
+    }
+  </script>
+</body>
+</html>
